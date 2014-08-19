@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = ProfaneFormatter::VERSION
   spec.authors       = ["Michael Crismali"]
   spec.email         = ["michael.crismali@gmail.com"]
-  spec.summary       = "Outputs your Rspec spec results in a profane way."
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = "Formats your Rspec spec results in a profane way."
+  spec.description   = "Formats your Rspec spec results in a profane way, obviously."
   spec.homepage      = "https://github.com/crismali/profane_formatter"
   spec.license       = "Apache"
 
