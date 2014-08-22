@@ -6,7 +6,7 @@ module ProfaneFormatter
   class Formatter < RSpec::Core::Formatters::ProgressFormatter
     include RSpec::Core::Formatters::ConsoleCodes
 
-    RSpec::Core::Formatters.register self, :example_passed#, :example_pending, :example_failed, :start_dump
+    RSpec::Core::Formatters.register self, :example_passed, :example_pending, :example_failed, :start_dump
 
     def example_passed(notification)
       output.print wrap(".", :success)
@@ -18,10 +18,6 @@ module ProfaneFormatter
 
     def example_failed(notification)
       output.print wrap("F", :failure)
-    end
-
-    def start_dump(notification)
-      output.puts
     end
   end
 end

@@ -1,5 +1,4 @@
 require "spec_helper"
-# require "rspec/core/formatters/progress_formatter"
 
 RSpec.describe ProfaneFormatter::Formatter do
   include FormatterSupport
