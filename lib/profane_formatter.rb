@@ -31,14 +31,14 @@ module ProfaneFormatter
     end
 
     def start_dump(notification)
-      print_profanity
+      print_profanity("!")
       output.puts
     end
 
     private
 
-    def print_profanity
-      profanity = ("U" * failure_counter) + "CK"
+    def print_profanity(post_profanity = "")
+      profanity = ("U" * failure_counter) + "CK" + post_profanity
       output.print wrap(profanity, :failure) unless failure_counter.zero?
       self.failure_counter = 0
     end

@@ -98,7 +98,7 @@ RSpec.describe ProfaneFormatter::ProfanityFormatter do
     it "prints out the same amount 'U's as the failure counter followed by 'CK'" do
       formatter.failure_counter = 4
       send_notification :start_dump, example_notification
-      expect(output.string).to eq("UUUUCK\n")
+      expect(output.string).to eq("UUUUCK!\n")
     end
 
     it "sets the failure_counter to 0" do
@@ -114,7 +114,7 @@ RSpec.describe ProfaneFormatter::ProfanityFormatter do
     output.gsub!(/ +$/, "") # strip trailing whitespace
 
     expect(output).to eq(<<-EOS.gsub(/^\s+\|/, ""))
-      |**FUCK.FFFUUUCK
+      |**FUCK.FFFUUUCK!
       |
       |#{expected_summary_output_for_example_specs}
     EOS
