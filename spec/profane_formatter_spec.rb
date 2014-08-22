@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe ProfaneFormatter::Formatter do
+RSpec.describe ProfaneFormatter::ProfanityFormatter do
   include FormatterSupport
 
   before do
@@ -8,19 +8,73 @@ RSpec.describe ProfaneFormatter::Formatter do
     allow(formatter).to receive(:color_enabled?).and_return(false)
   end
 
-  it "prints a . on example_passed" do
-    send_notification :example_passed, example_notification
-    expect(output.string).to eq(".")
+  context "attr_accessor" do
+    it "responds to getter" do
+      expect(formatter).to respond_to(:failure_counter)
+    end
+
+    it "responds to setter" do
+      expect(formatter).to respond_to(:failure_counter=)
+    end
   end
 
-  it "prints a * on example_pending" do
-    send_notification :example_pending, example_notification
-    expect(output.string).to eq("*")
+  describe "#initialize" do
+    it "sets failure_counter to 0" do
+      expect(formatter.failure_counter).to eq(0)
+    end
   end
 
-  it "prints a F on example_failed" do
-    send_notification :example_failed, example_notification
-    expect(output.string).to eq("F")
+  describe "#example_passed" do
+    it "prints a . on example_passed" do
+      send_notification :example_passed, example_notification
+      expect(output.string).to eq(".")
+    end
+
+    it "prints out the same amount 'U's as the failure counter followed by 'CK'" do
+      formatter.failure_counter = 4
+      send_notification :example_passed, example_notification
+      expect(output.string).to eq("UUUUCK.")
+    end
+
+    it "sets the failure_counter to 0" do
+      formatter.failure_counter = 44
+      send_notification :example_passed, example_notification
+      expect(formatter.failure_counter).to eq(0)
+    end
+  end
+
+
+  describe "#example_pending" do
+    it "prints a * on example_pending" do
+      send_notification :example_pending, example_notification
+      expect(output.string).to eq("*")
+    end
+
+    it "prints out the same amount 'U's as the failure counter followed by 'CK'" do
+      formatter.failure_counter = 4
+      send_notification :example_pending, example_notification
+      expect(output.string).to eq("UUUUCK*")
+    end
+
+    it "sets the failure_counter to 0" do
+      formatter.failure_counter = 44
+      send_notification :example_pending, example_notification
+      expect(formatter.failure_counter).to eq(0)
+    end
+  end
+
+  describe "#example_failed" do
+    it "prints a F on example_failed" do
+      send_notification :example_failed, example_notification
+      expect(output.string).to eq("F")
+    end
+
+    it "increments the failure counter" do
+      send_notification :example_failed, example_notification
+      expect(formatter.failure_counter).to eq(1)
+      send_notification :example_failed, example_notification
+      expect(formatter.failure_counter).to eq(2)
+    end
   end
 
   it "produces standard summary without pending when pending has a 0 count" do
