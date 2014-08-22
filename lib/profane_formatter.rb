@@ -30,6 +30,11 @@ module ProfaneFormatter
       self.failure_counter += 1
     end
 
+    def start_dump(notification)
+      print_profanity
+      output.puts
+    end
+
     private
 
     def print_profanity

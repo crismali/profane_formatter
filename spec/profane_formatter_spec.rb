@@ -89,18 +89,32 @@ RSpec.describe ProfaneFormatter::ProfanityFormatter do
     expect(output.string).to eq("")
   end
 
-  it "pushes nothing on start dump" do
-    send_notification :start_dump, null_notification
-    expect(output.string).to eq("\n")
+  describe "#start_dump" do
+    it "pushes nothing on start dump" do
+      send_notification :start_dump, null_notification
+      expect(output.string).to eq("\n")
+    end
+
+    it "prints out the same amount 'U's as the failure counter followed by 'CK'" do
+      formatter.failure_counter = 4
+      send_notification :start_dump, example_notification
+      expect(output.string).to eq("UUUUCK\n")
+    end
+
+    it "sets the failure_counter to 0" do
+      formatter.failure_counter = 44
+      send_notification :start_dump, example_notification
+      expect(formatter.failure_counter).to eq(0)
+    end
   end
 
   # The backrace is slightly different on JRuby so we skip there.
   it "produces the expected full output", :unless => RUBY_PLATFORM == "java" do
-    output = run_example_specs_with_formatter("progress")
+    output = run_example_specs_with_formatter("ProfaneFormatter::ProfanityFormatter")
     output.gsub!(/ +$/, "") # strip trailing whitespace
 
     expect(output).to eq(<<-EOS.gsub(/^\s+\|/, ""))
-      |**F.FFF
+      |**FUCK.FFFUUUCK
       |
       |#{expected_summary_output_for_example_specs}
     EOS
